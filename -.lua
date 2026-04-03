@@ -4,12 +4,15 @@ local plrs = game:GetService("Players")
 local rf = game:GetService("ReplicatedFirst")
 local lp = plrs.LocalPlayer
 
-print("unlock all activated -- DolphinSpooferV2")
+print("unlocked all successfully! thank you for using dolphinspooofer :D")
 
+-- Fake ClientAlert RemoteEvent the game tries to use upon loading
 local fake = Instance.new("RemoteEvent")
 fake.Name = "ClientAlert"
 fake.Parent = lp
 
+-- Spoof WaitForChild("ClientAlert") which the result from the LoadingScreen wanted to get
+-- this is important because anti-cheat also uses LoadingScreen
 local pmt = getrawmetatable(lp)
 local oldnc = pmt.__namecall
 setreadonly(pmt, false)
@@ -21,6 +24,7 @@ return oldnc(self, ...)
 end)
 setreadonly(pmt, true)
 
+-- Block :Kick and ClientAlert:FireServer in case it gets used (keep it it might be useful)
 local mt = getrawmetatable(game)
 local old = mt.__namecall
 setreadonly(mt, false)
@@ -36,6 +40,7 @@ return old(self, ...)
 end)
 setreadonly(mt, true)
 
+-- Neutered anti-cheat functions in LoadingScreen and LocalScript3 >> LocalScript3 is the anti-cheat
 local ls3 = rf:WaitForChild("LocalScript3", 10)
 local c = 0
 for _, f in getgc(false) do
@@ -59,6 +64,7 @@ end
 end
 end
 
+-- stupid unlock all below --
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local HttpService = game:GetService("HttpService")
